@@ -124,8 +124,6 @@ class NetworkVersionInfo(NamedTuple):
         large_ps_artifact = version.net >= 1
 
 
-
-
 class NetworkInfo(NamedTuple):
     num_frames: int | None
     is_rl_223: bool

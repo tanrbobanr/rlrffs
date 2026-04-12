@@ -6,6 +6,17 @@ from .crc import check_crc
 from .stream import Reader, ComponentBase, component, PrimitiveComponent
 
 
+__all__ = (
+    "ByteProperty",
+    "Header",
+    "KeyFrame",
+    "Properties",
+    "Property",
+    "StructProperty",
+    "Version",
+)
+
+
 @component
 class Version(ComponentBase):
     """Represents the engine version, licensee version, net version, and

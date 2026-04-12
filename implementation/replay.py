@@ -11,6 +11,12 @@ from .footer import Footer
 from .body import Body
 
 
+__all__ = (
+    "Replay",
+    "ReplayFraming",
+)
+
+
 @component
 class ReplayFraming(ComponentBase):
     header: Header

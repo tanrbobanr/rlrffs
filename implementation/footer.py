@@ -5,6 +5,16 @@ from typing import Self
 from .stream import Reader, ComponentBase, component
 
 
+__all__ = (
+    "CacheEntry",
+    "CacheProperty",
+    "Class",
+    "DebugString",
+    "Footer",
+    "TickMark",
+)
+
+
 @component
 class DebugString(ComponentBase):
     frame: int

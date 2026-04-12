@@ -6,6 +6,12 @@ from .crc import check_crc
 from .stream import Reader, ComponentBase, component
 
 
+__all__ = (
+    "KeyFrame",
+    "Metadata",
+)
+
+
 @component
 class KeyFrame(ComponentBase):
     """A keyframe"""

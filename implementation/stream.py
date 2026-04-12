@@ -23,6 +23,12 @@ from typing import (
 )
 
 
+__all__ = (
+    "Reader",
+    "Writer",
+)
+
+
 # --- GLOBALS ----------------------------------------------------------
 
 MAX_ASCII_LEN = 256
@@ -553,7 +559,6 @@ class Writer:
 
     def b1(self, value: bool) -> None:
         self.bits(value, 1)
-
 
 
 # --- COMPONENTS -------------------------------------------------------
