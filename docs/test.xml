@@ -1,0 +1,22 @@
+<Document>
+    <Section title="xyz" numbered="true">
+        <Paragraph>
+            Some text here, with some <Literal>inline code</Literal>, some <Bold>bold text</Bold>, and some <Italic>italic text</Italic>, etc.
+        </Paragraph>
+        <BlockQuote>
+            <Paragraph>
+                Here is a block quote some content
+            </Paragraph>
+            <Paragraph>
+                Another line!?
+            </Paragraph>
+        </BlockQuote>
+        <Code lang="py">
+            Some code here
+            That is multiline!
+            Hooray!
+
+            Even supports empty lines
+        </Code>
+    </Section>
+</Document>

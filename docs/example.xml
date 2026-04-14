@@ -1,0 +1,67 @@
+<Document>
+    <Section title="xyz" numbered="true">
+        <Paragraph>
+            Some text here, with some <InlineCode>inline code</InlineCode>, some <Bold>bold text</Bold>, and some <Italic>italic text</Italic>, etc.
+        </Paragraph>
+        <BlockQuote>
+            <Paragraph>
+                Here is a block quote some content
+            </Paragraph>
+            <Paragraph>
+                Another line!?
+            </Paragraph>
+        </BlockQuote>
+        <Code lang="py">
+            Some code here
+            That is multiline!
+            Hooray!
+
+            Even supports empty lines
+        </Code>
+        <UnorderedList>
+            <Item>An unordered list</Item>
+        </UnorderedList>
+        <OrderedList>
+            <Item>An ordered list</Item>
+        </OrderedList>
+        And here comes some pseudocode:
+        <Pseudocode>
+            <Final name="variable_name">some value or stmt</Final>
+            <Temp name="variable_name">some value or stmt</Temp>
+            <IfBlock>
+                <If>
+                    <Condition>
+                        <LValue>stmt</LValue>
+                        <Eq/>
+                        <RValue>stmt</RValue>
+                    </Condition>
+                    <Do>
+                        stmt
+                    </Do>
+                </If>
+                <ElseIf>
+                    <Condition>
+                        <LValue>stmt</LValue>
+                        <Eq/>
+                        <RValue>stmt</RValue>
+                    </Condition>
+                    <Do>
+                        stmt
+                    </Do>
+                </ElseIf>
+                <Else>
+                    stmt
+                </Else>
+            </IfBlock>
+            <Read>
+                Target
+                <Using>
+                    <Arg name="X">value</Arg>
+                </Using>
+            </Read>
+        </Pseudocode>
+        <Section title="non-numbered section">
+        </Section>
+        <Section title="another numbered section" numbered="true"></Section>
+    </Section>
+</Document>
