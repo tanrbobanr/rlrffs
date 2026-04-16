@@ -1,10 +1,11 @@
 import os
 import json
 import sys
+import statistics
+
 sys.path.append(".")
 
-from implementation.stream import Reader
-from implementation.replay import Replay
+from implementation import *
 
 
 def main() -> None:
@@ -12,7 +13,13 @@ def main() -> None:
     skip: bool = False
     start = "P3_Soccar Strike.replay"
     directory = "replays"
-    gamemodes = set()
+
+    x_pre_7: list[float] = list()
+    y_pre_7: list[float] = list()
+    z_pre_7: list[float] = list()
+    x_post_7: list[float] = list()
+    y_post_7: list[float] = list()
+    z_post_7: list[float] = list()
 
     for fname in os.listdir(directory):
         if not start:
@@ -45,16 +52,39 @@ def main() -> None:
 
     #     seen = False
 
-    #     for frame in r.body:
-    #         for event in frame.events:
-    #             if isinstance(event, UpdatedActor):
-    #                 for attribute in event.attributes:
-    #                     if attribute.object_id == target_oid:
-    #                         gamemodes.add(attribute.value)
-    #                         if not seen:
-    #                             print(attribute.value)
-    #                             seen = True
-    # print(gamemodes)
+
+        for frame in r.body:
+            for event in frame.events:
+                if isinstance(event, UpdatedActor):
+                    for i, attribute in enumerate(event.attributes):
+                        v = attribute.value
+                        if isinstance(v, (Explosion, ExplosionExtended)):
+                            if isinstance(v, ExplosionExtended):
+                                v = v.explosion
+                            vecs = (v.location,)
+                            for vec in vecs:
+                                if r.header.version.net >= 7:
+                                    x_post_7.append(vec.x)
+                                    y_post_7.append(vec.y)
+                                    z_post_7.append(vec.z)
+                                else:
+                                    x_pre_7.append(vec.x)
+                                    y_pre_7.append(vec.y)
+                                    z_pre_7.append(vec.z)
+
+    for values, name in (
+        (x_pre_7, "x_pre_7"),
+        (y_pre_7, "y_pre_7"),
+        (z_pre_7, "z_pre_7"),
+        (x_post_7, "x_post_7"),
+        (y_post_7, "y_post_7"),
+        (z_post_7, "z_post_7"),
+    ):
+        lo = min(values)
+        hi = max(values)
+        mean = statistics.mean(values)
+        print(f"{name: <8}  {lo}-{hi} ({mean})")
+
 
 if __name__ == "__main__":
     main()

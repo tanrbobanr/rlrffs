@@ -185,10 +185,34 @@ class Vec3f(ComponentBase):
         )
 
 
+# @component
+# class Vec3(ComponentBase):
+#     x: int | float
+#     y: int | float
+#     z: int | float
+
+#     @classmethod
+#     def deserialize(cls, stream: Reader, network_info: NetworkInfo) -> Self:
+#         net7 = network_info.version.net >= 7
+#         size_max = 22 if net7 else 20
+#         size = stream.bbrs(4, size_max)
+#         bias = 1 << (size + 1)
+#         bit_limit = size + 2
+
+#         x = stream.bits(bit_limit) - bias
+#         y = stream.bits(bit_limit) - bias
+#         z = stream.bits(bit_limit) - bias
+
+#         if net7:
+#             return cls(x=x, y=y, z=z)
+#         return cls(x=(x / 100), y=(y / 100), z=(z / 100))
+
+
+# NOTE: Probably vec3i because it encodes pos?
 @component
 class AppliedDamage(ComponentBase):
     id: int
-    position: Vec3f
+    position: Vec3i
     damage_index: int
     total_damage: int
 
@@ -196,7 +220,7 @@ class AppliedDamage(ComponentBase):
     def deserialize(cls, stream: Reader, network_info: NetworkInfo) -> Self:
         return cls(
             id=stream.u8(),
-            position=Vec3f.deserialize(stream, network_info),
+            position=Vec3i.deserialize(stream, network_info),
             damage_index=stream.i32(),
             total_damage=stream.i32()
         )
@@ -445,12 +469,13 @@ class ClubColors(ComponentBase):
         )
 
 
+# NOTE: probably vec3i because it encodes pos?
 @component
 class DamageState(ComponentBase):
     tile_state: TileState
     damaged: bool
     offender: int
-    ball_position: Vec3f
+    ball_position: Vec3i
     direct_hit: bool
     immediate: bool
 
@@ -460,7 +485,7 @@ class DamageState(ComponentBase):
             tile_state=TileState(stream.u8()),
             damaged=stream.b1(),
             offender=stream.i32(),
-            ball_position=Vec3f.deserialize(stream, network_info),
+            ball_position=Vec3i.deserialize(stream, network_info),
             direct_hit=stream.b1(),
             immediate=stream.b1()
         )
@@ -515,16 +540,17 @@ class DemolishExtended(ComponentBase):
         )
 
 
+# NOTE: Probably vec3i because it encodes pos?
 @component
 class Explosion(ComponentBase):
     goal: Pointer
-    location: Vec3f
+    location: Vec3i
 
     @classmethod
     def deserialize(cls, stream: Reader, network_info: NetworkInfo) -> Self:
         return cls(
             goal=Pointer.deserialize(stream),
-            location=Vec3f.deserialize(stream, network_info)
+            location=Vec3i.deserialize(stream, network_info)
         )
 
 
@@ -887,7 +913,7 @@ class RigidBody(ComponentBase):
 
     @classmethod
     def deserialize(cls, stream: Reader, network_info: NetworkInfo) -> Self:
-        sleeping = stream.bits(1)
+        sleeping = stream.b1()
         location = Vec3f.deserialize(stream, network_info)
         rotation = Quaternion.deserialize(stream, network_info)
 
@@ -983,8 +1009,7 @@ class Int64(int, PrimitiveComponent):
 
 @component
 class WeldedInfo(ComponentBase):
-    active: bool
-    actor_id: int
+    target: Pointer
     offset: Vec3f
     mass: float
     rotation: Rotation
@@ -992,8 +1017,7 @@ class WeldedInfo(ComponentBase):
     @classmethod
     def deserialize(cls, stream: Reader, network_info: NetworkInfo) -> Self:
         return cls(
-            active=stream.b1(),
-            actor_id=stream.i32(),
+            target=Pointer.deserialize(stream),
             offset=Vec3f.deserialize(stream, network_info),
             mass=stream.f32(),
             rotation=Rotation.deserialize(stream)
